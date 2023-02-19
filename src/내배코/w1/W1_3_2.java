@@ -1,4 +1,4 @@
-package 내배코;
+package 내배코.w1;
 
 public class W1_3_2 {
     public long solution(int goal, int[] durations) {

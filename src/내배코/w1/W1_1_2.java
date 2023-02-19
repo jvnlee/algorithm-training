@@ -1,4 +1,4 @@
-package 내배코;
+package 내배코.w1;
 
 public class W1_1_2 {
     public int solution(int[][] cost, int[][] order) {
