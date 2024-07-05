@@ -40,6 +40,6 @@ public class BOJ1654 {
             }
         }
 
-        System.out.println(min - 1);
+        System.out.println(max);
     }
 }
