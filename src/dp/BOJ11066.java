@@ -31,9 +31,9 @@ public class BOJ11066 {
 
             int[][] dp = new int[k + 1][k + 1]; // dp[a][b] = a장부터 b장까지 합치는 최소 비용
 
-            for (int size = 1; size <= k; size++) { // size = dp[a][b]에서 a ~ b 범위의 크기
-                for (int start = 1; start + size <= k; start++) {
-                    int end = start + size;
+            for (int gap = 1; gap < k; gap++) { // gap = dp[a][b]에서 구간 a ~ b의 간격
+                for (int start = 1; start + gap <= k; start++) {
+                    int end = start + gap;
                     dp[start][end] = Integer.MAX_VALUE;
 
                     for (int divider = start; divider < end; divider++) {
