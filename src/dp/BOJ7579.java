@@ -32,7 +32,7 @@ public class BOJ7579 {
 
         int[] dp = new int[totalCost + 1]; // dp[i]: i의 cost를 지불하고 확보할 수 있는 최대 memory
         Arrays.fill(dp, -1);
-        dp[0] = 0;
+        dp[0] = 0; // 0의 cost를 지불하고 확보할 수 있는 최대 memory는 0
 
         for (int i = 0; i < n; i++) {
             int memory = memories[i];
