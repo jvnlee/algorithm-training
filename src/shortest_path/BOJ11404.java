@@ -40,18 +40,8 @@ public class BOJ11404 {
             distance[a][b] = Math.min(distance[a][b], c);
         }
 
-        for (int mid = 1; mid <= n; mid++) {
-            for (int from = 1; from <= n; from++) {
-                for (int to = 1; to <= n; to++) {
-                    distance[from][to] = Math.min(distance[from][to], distance[from][mid] + distance[mid][to]);
-                }
-            }
-        }
+        floydWarshall();
 
-        System.out.println(floydWarshall());
-    }
-
-    private static String floydWarshall() {
         StringBuilder answer = new StringBuilder();
 
         for (int from = 1; from <= n; from++) {
@@ -67,6 +57,16 @@ public class BOJ11404 {
             answer.append("\n");
         }
 
-        return answer.toString();
+        System.out.println(answer);
+    }
+
+    private static void floydWarshall() {
+        for (int mid = 1; mid <= n; mid++) {
+            for (int from = 1; from <= n; from++) {
+                for (int to = 1; to <= n; to++) {
+                    distance[from][to] = Math.min(distance[from][to], distance[from][mid] + distance[mid][to]);
+                }
+            }
+        }
     }
 }
