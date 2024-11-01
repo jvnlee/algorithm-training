@@ -18,7 +18,8 @@ public class BOJ2618 {
         N = Integer.parseInt(br.readLine());
         W = Integer.parseInt(br.readLine());
 
-        // dp[i][j]: 1번 경찰차가 i번째 사건을 해결, 2번 경찰차가 j번째 사건을 해결했을 때 지금까지 두 경찰차가 이동한 총 거리
+        // dp[i][j]: 1번 경찰차와 2번 경찰차가 각각 i번째와 j번째 사건 위치에 있을 때, 모든 사건을 해결할 때까지 움직여야하는 거리 합의 최소값
+        // 즉 첫 사건부터 마지막 사건까지 모두 해결했을 때의 최소 이동거리 합은 dp[0][0]
         dp = new int[W + 1][W + 1];
         // events[i]: i번째 사건. 위치: (events[i][0], events[i][1])
         events = new int[W + 1][2];
@@ -33,14 +34,17 @@ public class BOJ2618 {
             events[i][1] = Integer.parseInt(st.nextToken());
         }
 
+        // 두 경찰차가 이동한 총 거리의 최소값 도출
         bw.write(getMinDistance(1, 0, 0) + "\n");
 
+        // 각 사건을 해결한 경찰차 번호 도출
         int p1sEventIdx = 0;
         int p2sEventIdx = 0;
 
         for (int i = 1; i <= W; i++) {
             int distance = getDistance(1, p1sEventIdx, i);
 
+            // i번 사건 해결을 위해 1번 경찰차가 움직였다고 가정해보고 dp에 기록된 값으로 검증 (맞아떨어지면 1번이 해결한 것이고, 아니라면 2번이 해결한 것임)
             if (dp[p1sEventIdx][p2sEventIdx] - distance == dp[i][p2sEventIdx]) {
                 p1sEventIdx = i;
                 bw.write("1\n");
@@ -63,8 +67,12 @@ public class BOJ2618 {
             return dp[p1sEventIdx][p2sEventIdx]; // 이미 계산된 경우이므로 중복 계산하지 않고 즉시 값을 반환
         }
 
-        int moveP1 = getMinDistance(curEventIdx + 1, curEventIdx, p2sEventIdx) + getDistance(1, p1sEventIdx, curEventIdx);
-        int moveP2 = getMinDistance(curEventIdx + 1, p1sEventIdx, curEventIdx) + getDistance(2, p2sEventIdx, curEventIdx);
+        // 1번 경찰차가 현재 사건으로 이동했을 때 1,2번 경찰차의 총 이동거리
+        int moveP1 = getDistance(1, p1sEventIdx, curEventIdx)
+                + getMinDistance(curEventIdx + 1, curEventIdx, p2sEventIdx);
+        // 2번 경찰차가 현재 사건으로 이동했을 때 1,2번 경찰차의 총 이동거리
+        int moveP2 = getDistance(2, p2sEventIdx, curEventIdx)
+                + getMinDistance(curEventIdx + 1, p1sEventIdx, curEventIdx);
 
         return dp[p1sEventIdx][p2sEventIdx] = Math.min(moveP1, moveP2);
 
@@ -75,7 +83,7 @@ public class BOJ2618 {
         int[] startPos = events[start];
         int[] endPos = events[end];
 
-        if (start == 0) { // 경찰차 시작 위치 설정 (0번째 사건)
+        if (start == 0) { // 경찰차 시작 위치 설정 (0번째 사건인 경우 아직 움직이기 전이므로)
             if (policeNum == 1) {
                 startPos = new int[]{1, 1}; // 1번 경찰차는 (1, 1)에서 시작
             } else {
