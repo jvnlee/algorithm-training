@@ -18,7 +18,10 @@ public class BOJ4803 {
 
         while (true) {
             input = br.readLine();
-            if (input == null || input.equals("0 0")) break;
+
+            if (input == null || input.equals("0 0")) {
+                break;
+            }
             
             StringTokenizer st = new StringTokenizer(input);
             n = Integer.parseInt(st.nextToken());
@@ -33,6 +36,7 @@ public class BOJ4803 {
 
             for (int i = 0; i < m; i++) {
                 st = new StringTokenizer(br.readLine());
+
                 int a = Integer.parseInt(st.nextToken());
                 int b = Integer.parseInt(st.nextToken());
 
@@ -43,6 +47,7 @@ public class BOJ4803 {
             int trees = getTrees();
 
             bw.write("Case " + caseNum + ": ");
+
             if (trees == 0) {
                 bw.write("No trees.\n");
             } else if (trees == 1) {
@@ -59,6 +64,7 @@ public class BOJ4803 {
         br.close();
     }
 
+    // 모든 정점을 한번씩만 방문하며 해당 정점을 시작점(루트)으로 하는 서브 트리의 개수를 셈
     private static int getTrees() {
         int treeCount = 0;
 
@@ -66,6 +72,7 @@ public class BOJ4803 {
             if (!visited[i]) {
                 nodeCount = 0;
                 edgeCount = 0;
+
                 if (isTree(i, -1)) {
                     treeCount++;
                 }
@@ -75,16 +82,22 @@ public class BOJ4803 {
         return treeCount;
     }
 
+    /*
+    그래프가 주어졌을 때, 트리로 판정하기 위해서는
+    1. 사이클이 있어서는 안됨
+    2. 간선의 개수 = 정점의 개수 - 1 을 만족해야함
+     */
     private static boolean isTree(int node, int parent) {
         visited[node] = true;
         nodeCount++;
 
         for (int adj : graph.get(node)) {
-            if (adj != parent) {
-                if (visited[adj]) {
+            if (adj != parent) { // 부모가 아닌 인접 노드일 때
+                if (visited[adj]) { // 이미 방문했던 기록이 있다면 중복 방문하게 된 것이므로 사이클을 암시
                     return false;
                 }
-                if (!isTree(adj, node)) {
+
+                if (!isTree(adj, node)) { // 하위 노드를 탐색하는 과정에서 트리 조건이 만족되지 않는 경우
                     return false;
                 }
             }
@@ -92,8 +105,8 @@ public class BOJ4803 {
 
         edgeCount += graph.get(node).size();
         
-        if (parent == -1) {
-            return edgeCount/2 == nodeCount - 1;
+        if (parent == -1) { // 루트 노드에 대해서만 다음 검증 과정을 거침 (모든 하위 노드 탐색을 마친 후)
+            return edgeCount / 2 == nodeCount - 1; // edge는 양방향성이라 모두 2번씩 세었으므로 edgeCount는 2로 나눔
         }
         
         return true;
