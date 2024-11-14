@@ -13,7 +13,7 @@ public class BOJ1197 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        // 정점이 더 많은 경우에는 정점 중심의 프림, 간선이 더 많은 경우에는 간선 중심의 크루스칼 알고리즘을 사용하는 것이 유리함
+        // V < E 일 때는 정점 중심의 프림, V > E일 때는 간선 중심의 크루스칼 알고리즘을 사용하는 것이 유리함
         int V = Integer.parseInt(st.nextToken());
         int E = Integer.parseInt(st.nextToken());
 
@@ -48,6 +48,7 @@ public class BOJ1197 {
             if (find(from) != find(to)) {
                 union(from, to);
                 answer += weight;
+                edgeCount++;
             }
         }
 
