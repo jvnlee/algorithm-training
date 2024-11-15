@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-public class BOJ4386 {
+public class BOJ4386_Kruskal {
     private static int[] parents;
 
     public static void main(String[] args) throws IOException {
