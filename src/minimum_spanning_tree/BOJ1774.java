@@ -6,49 +6,53 @@ import java.io.InputStreamReader;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-public class BOJ4386_Kruskal {
+public class BOJ1774 {
     private static int[] parents;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int n = Integer.parseInt(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
 
-        StringTokenizer st;
+        Node[] nodes = new Node[N + 1];
 
-        // 좌표를 받아 모든 별을 저장
-        Star[] stars = new Star[n];
-
-        for (int i = 0; i < n; i++) {
+        for (int i = 1; i <= N; i++) {
             st = new StringTokenizer(br.readLine());
 
-            stars[i] = new Star(
-                    Double.parseDouble(st.nextToken()),
-                    Double.parseDouble(st.nextToken())
-            );
+            nodes[i] = new Node(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));
         }
 
-        // 모든 별 사이의 간선을 만들어 저장
+        parents = new int[N + 1];
+
+        for (int i = 1; i <= N; i++) {
+            parents[i] = i;
+        }
+
         PriorityQueue<Edge> edges = new PriorityQueue<>();
 
-        for (int i = 0; i < n; i++) {
-            for (int j = i + 1; j < n; j++) {
-                double dist = stars[i].getDistance(stars[j]);
-                edges.offer(new Edge(i, j, dist));
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+
+            int from = Integer.parseInt(st.nextToken());
+            int to = Integer.parseInt(st.nextToken());
+
+            union(from, to); // 이미 연결된 간선은 유니온으로 합침
+        }
+
+        for (int i = 1; i <= N; i++) {
+            for (int j = i + 1; j <= N; j++) {
+                double dist = nodes[i].getDistance(nodes[j]);
+                edges.offer(new Edge(i, j, dist)); // 모든 노드 사이에 간선을 생성
             }
         }
 
         // 크루스칼 알고리즘 적용
-        parents = new int[n];
-
-        for (int i = 0; i < n; i++) {
-            parents[i] = i;
-        }
-
         double answer = 0;
         int edgeCount = 0;
 
-        while (!edges.isEmpty() && edgeCount < n - 1) {
+        while (!edges.isEmpty() && edgeCount < N - 1) {
             Edge edge = edges.poll();
 
             int from = edge.from;
@@ -60,7 +64,6 @@ public class BOJ4386_Kruskal {
                 answer += dist;
                 edgeCount++;
             }
-
         }
 
         System.out.printf("%.2f", answer);
@@ -81,28 +84,25 @@ public class BOJ4386_Kruskal {
         }
     }
 
-    private static int find(int n) {
-        if (parents[n] == n) {
-            return n;
+    private static int find(int node) {
+        if (parents[node] == node) {
+            return node;
         }
 
-        return parents[n] = find(parents[n]);
+        return parents[node] = find(parents[node]);
     }
 
-    private static class Star {
-        double x;
-        double y;
+    private static class Node {
+        int x;
+        int y;
 
-        public Star(double x, double y) {
+        public Node(int x, int y) {
             this.x = x;
             this.y = y;
         }
 
-        public double getDistance(Star s) {
-            double sx = s.x;
-            double sy = s.y;
-
-            return Math.sqrt(Math.pow(x - s.x, 2) + Math.pow(y - s.y, 2));
+        public double getDistance(Node n) {
+            return Math.sqrt(Math.pow(n.x - x, 2) + Math.pow(n.y - y, 2));
         }
     }
 
