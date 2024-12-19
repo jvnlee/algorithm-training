@@ -1,6 +1,6 @@
 package programmers;
 
-public class BOJ60059 {
+public class PRG60059 {
     private int M, N;
 
     public boolean solution(int[][] key, int[][] lock) {
