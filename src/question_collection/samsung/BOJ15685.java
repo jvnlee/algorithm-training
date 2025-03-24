@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class BOJ15685 {
-    private static boolean[][] board = new boolean[100][100];
+    private static boolean[][] board = new boolean[101][101];
     private static int[] dx = {1, 0, -1, 0};
     private static int[] dy = {0, -1, 0, 1};
 
@@ -32,8 +32,8 @@ public class BOJ15685 {
 
         int answer = 0;
 
-        for (int i = 0; i < 99; i++) {
-            for (int j = 0; j < 99; j++) {
+        for (int i = 0; i < 100; i++) {
+            for (int j = 0; j < 100; j++) {
                 if (board[i][j] && board[i + 1][j] && board[i][j + 1] && board[i + 1][j + 1]) {
                     answer++;
                 }
